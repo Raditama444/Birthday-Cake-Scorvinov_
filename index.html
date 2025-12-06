@@ -161,7 +161,6 @@
       box-shadow:0 3px 8px rgba(0,0,0,0.1);
     }
 
-
     .tier-top::after{
       /* tier atas: drip sedikit lebih lembut */
       opacity:0.9;
@@ -206,7 +205,7 @@
       border-radius:inherit;
     }
 
-    /* Api lilin sekarang nempel ke lilin (bukan ke tengah kue) */
+    /* Api lilin */
     .flame{
       position:absolute;
       bottom:100%;
@@ -228,9 +227,20 @@
     }
 
     @media (max-width:920px){
-      body{padding:18px}
-      .card{grid-template-columns:1fr;}
-      .preview{height:320px}
+      body{
+        padding:16px;
+        align-items:flex-start;
+      }
+      .card{
+        grid-template-columns:1fr;
+      }
+      .preview{
+        height:320px;
+      }
+      .btn{
+        padding:12px 14px;
+        font-size:14px;
+      }
     }
 
     @media print {
@@ -353,6 +363,16 @@
     const confettiCanvas = document.getElementById('confetti-canvas');
     const candle = document.getElementById('candle');
 
+    // Helper: buat event jalan di desktop & HP (click + touchstart)
+    function addTap(el, handler){
+      if(!el) return;
+      el.addEventListener('click', handler);
+      el.addEventListener('touchstart', function(e){
+        e.preventDefault(); // biar nggak double fire
+        handler();
+      }, {passive:false});
+    }
+
     function updatePreview(){
       previewTitle.style.fontFamily = fontSelect.value;
       previewMsg.style.fontFamily = fontSelect.value;
@@ -447,13 +467,14 @@
       o.stop(t+0.1);
     }
 
-    playBtn.addEventListener('click', ()=>{
+    // pakai addTap biar enak di HP & desktop
+    addTap(playBtn, ()=>{
       makeConfetti(140);
       animateConfetti();
       try{ playMelody(); }catch(e){}
     });
 
-    surpriseBtn.addEventListener('click', ()=>{
+    addTap(surpriseBtn, ()=>{
       cake.animate(
         [{transform:'translateY(0)'},{transform:'translateY(-18px)'},{transform:'translateY(0)'}],
         {duration:900,iterations:3}
@@ -468,7 +489,7 @@
 
     // Lilin ON/OFF – api nempel di atas lilin
     let flame;
-    cake.addEventListener('click', ()=>{
+    addTap(cake, ()=>{
       if(flame){
         flame.remove();
         flame = null;
@@ -479,9 +500,9 @@
       candle.appendChild(flame);
     });
 
-    printBtn.addEventListener('click', ()=> window.print());
+    addTap(printBtn, ()=> window.print());
 
-    resetBtn.addEventListener('click', ()=>{
+    addTap(resetBtn, ()=>{
       previewTitle.textContent = 'Teruntuk Scorvinov';
       previewMsg.textContent = 'Happy Birthday and God Bless You!!!';
       fontSelect.value='Inter, system-ui';
@@ -506,3 +527,5 @@
   </script>
 </body>
 </html>
+
+
