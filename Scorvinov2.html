@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy Birthday Scorvinov</title>
+  <style>
+    :root{
+      --bg:#0f172a; --card:#fff; --accent:#ff4d6d; --muted:#94a3b8;
+      --glass: rgba(255,255,255,0.06);
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      
+      /* Hilangkan seleksi & kursor teks */
+      -webkit-user-select:none;
+      -moz-user-select:none;
+      -ms-user-select:none;
+      user-select:none;
+      cursor:default;
+
+      /* Hilangkan highlight biru saat tap HP */
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body{
+      background: radial-gradient(1200px 600px at 10% 10%, #0b1220 0%, #071226 20%, #051827 40%, #031021 100%),var(--bg);
+      color:var(--card);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+    }
+
+    .wrap{width:100%;max-width:980px}
+
+    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    .logo{
+      width:56px;height:56px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),#ffb86b);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;color:#111;font-size:18px;
+    }
+    h1{font-size:20px;margin:0}
+    p.lead{margin:0;color:var(--muted)}
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:18px;
+      padding:20px;
+      box-shadow:0 8px 30px rgba(2,6,23,0.6);
+      backdrop-filter: blur(6px);
+      display:grid;
+      grid-template-columns:1fr 380px;
+      gap:20px;
+    }
+
+    .left{padding:6px}
+    .controls{display:flex;flex-direction:column;gap:12px}
+    label{font-size:13px;color:var(--muted)}
+
+    /* Dropdown tetap bisa dipilih */
+    select, #fontSelect, #fontSelect option{
+      -webkit-user-select:auto;
+      -moz-user-select:auto;
+      -ms-user-select:auto;
+      user-select:auto;
+      cursor:pointer !important;
+    }
+
+    select{
+      width:100%;
+      padding:10px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.06);
+      background:transparent;
+      color:var(--card);
+      outline:none;
+    }
+
+    .row{display:flex;gap:10px}
+    .row > *{flex:1}
+
+    .btn{
+      padding:10px 12px;
+      border-radius:10px;
+      border:none;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .btn-primary{background:linear-gradient(90deg,var(--accent),#ffb86b);color:#111}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--card)}
+
+    .preview{
+      background:linear-gradient(180deg,#fff 0%, #ffefef 100%);
+      color:#10203a;
+      padding:18px;
+      border-radius:14px;
+      position:relative;
+      overflow:hidden;
+      height:340px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* KUE PINK 3 TINGKAT - BENTUK KOTAK + CREAM */
+    .cake{
+      width:200px;
+      height:170px;
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      margin-top:6px;
+      margin-bottom:4px;
+    }
+
+    .cake-tier{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      border-radius:14px;
+      background:linear-gradient(180deg,#ffc1e3,#ff8ec7);
+      box-shadow:0 6px 14px rgba(0,0,0,0.18);
+      overflow:visible;
+    }
+    /* disusun dari bawah dengan jarak rapi */
+    .tier-bottom{
+      width:190px;
+      height:64px;
+      bottom:18px;
+      background:linear-gradient(180deg,#ffb3de,#ff72bf);
+    }
+    .tier-middle{
+      width:155px;
+      height:56px;
+      bottom:60px;
+      background:linear-gradient(180deg,#ffd1ea,#ff94cf);
+    }
+    .tier-top{
+      width:120px;
+      height:48px;
+      bottom:98px;
+      background:linear-gradient(180deg,#ffe0f3,#ff9fd4);
+    }
+
+    /* Cream di atas tiap tier */
+    .cake-tier::before{
+      content:"";
+      position:absolute;
+      top:-12px;
+      left:10px;
+      right:10px;
+      height:22px;
+      border-radius:14px 14px 10px 10px;
+      background:radial-gradient(circle at 50% 20%, #ffffff 0, #ffe4f3 50%, #ffc1e3 100%);
+      box-shadow:0 3px 8px rgba(0,0,0,0.1);
+    }
+
+
+    .tier-top::after{
+      /* tier atas: drip sedikit lebih lembut */
+      opacity:0.9;
+    }
+
+    .message{margin-top:12px;text-align:center}
+    .message h2{margin:0;font-size:26px}
+    .message p{margin:6px 0 0;color:rgba(16,32,58,0.75)}
+
+    .settings{display:flex;gap:8px;align-items:center}
+    .color-swatch{width:34px;height:34px;border-radius:8px;border:2px solid rgba(0,0,0,0.06);cursor:pointer}
+
+    footer{margin-top:12px;color:var(--muted);font-size:13px}
+
+    #confetti-canvas{position:absolute;inset:0;pointer-events:none}
+
+    #fontSelect option{
+      background:#ffefef;
+      color:#10203a;
+    }
+
+    /* Lilin di atas kue, selaras di tengah tier teratas */
+    .candle-body{
+      position:absolute;
+      width:10px;
+      height:40px;
+      bottom:140px; /* duduk di atas tier-top */
+      left:50%;
+      transform:translateX(-50%);
+      background:linear-gradient(180deg,#ffffff,#ffd6f0);
+      border-radius:6px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.2);
+      z-index:3;
+    }
+
+    .candle-body::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image:repeating-linear-gradient(135deg,#ff8ec7 0 3px, transparent 3px 6px);
+      opacity:0.4;
+      border-radius:inherit;
+    }
+
+    /* Api lilin sekarang nempel ke lilin (bukan ke tengah kue) */
+    .flame{
+      position:absolute;
+      bottom:100%;
+      left:50%;
+      transform:translateX(-50%);
+      width:16px;
+      height:22px;
+      border-radius:50%;
+      background:radial-gradient(circle at 35% 25%, #fff, #ffd86b 35%, #ff9b42 55%, transparent 75%);
+      filter:drop-shadow(0 6px 8px rgba(255,140,77,0.55));
+      animation:flicker 0.6s infinite ease-in-out alternate;
+      transform-origin:50% 100%;
+      z-index:4;
+    }
+
+    @keyframes flicker{
+      0%{ transform:translateX(-50%) translateY(0) scale(1) rotate(-2deg); opacity:0.9; }
+      100%{ transform:translateX(-50%) translateY(-3px) scale(1.07) rotate(2deg); opacity:1; }
+    }
+
+    @media (max-width:920px){
+      body{padding:18px}
+      .card{grid-template-columns:1fr;}
+      .preview{height:320px}
+    }
+
+    @media print {
+      html, body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+        background: #ffffff;
+      }
+
+      body {
+        justify-content:flex-start;
+        padding:0;
+      }
+
+      .wrap {
+        max-width:100%;
+      }
+
+      .card {
+        box-shadow:none;
+        background:linear-gradient(180deg, rgba(255,255,255,1), rgba(255,239,239,1));
+      }
+
+      .preview {
+        background:linear-gradient(180deg,#ffffff 0%, #ffefef 100%) !important;
+      }
+
+      .cake-tier,
+      .candle-body,
+      .logo,
+      .color-swatch,
+      .btn-primary {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">HB</div>
+      <div>
+        <h1>Happy Birthday Scorvinov</h1>
+        <p class="lead">17 November 2025</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="left">
+        <div class="controls">
+
+          <div>
+            <label>Gaya font</label>
+            <select id="fontSelect">
+              <option value="Inter, system-ui">Modern</option>
+              <option value="'Pacifico', cursive">Handwritten</option>
+              <option value="Georgia, serif">Serif</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Palet warna</label>
+            <div class="settings">
+              <div class="color-swatch" data-color="#ff4d6d" style="background:#ff4d6d"></div>
+              <div class="color-swatch" data-color="#7c5cff" style="background:#7c5cff"></div>
+              <div class="color-swatch" data-color="#34d399" style="background:#34d399"></div>
+              <div class="color-swatch" data-color="#ffb86b" style="background:#ffb86b"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <button class="btn btn-primary" id="playBtn">Nyalakan Musik & Konfeti</button>
+            <button class="btn btn-ghost" id="printBtn">Cetak / Simpan</button>
+          </div>
+
+          <div class="row">
+            <button class="btn" id="surpriseBtn">Surprise! (Animasi)</button>
+            <button class="btn" id="resetBtn">Reset</button>
+          </div>
+
+        </div>
+        <footer>Tip: Tekan <strong>Nyalakan Musik & Konfeti</strong> lalu klik kue untuk menyalakan / mematikan lilin.</footer>
+      </div>
+
+      <div style="position:relative">
+        <div class="preview" id="cardPreview">
+          <canvas id="confetti-canvas"></canvas>
+
+          <div class="cake" id="cake">
+            <div class="cake-tier tier-bottom"></div>
+            <div class="cake-tier tier-middle"></div>
+            <div class="cake-tier tier-top"></div>
+            <div class="candle-body" id="candle"></div>
+          </div>
+
+          <div class="message">
+            <h2 id="previewTitle">Teruntuk Scorvinov</h2>
+            <p id="previewMsg">Happy Birthday and God Bless You!!!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const fontSelect = document.getElementById('fontSelect');
+    const previewTitle = document.getElementById('previewTitle');
+    const previewMsg = document.getElementById('previewMsg');
+    const colorSwatches = document.querySelectorAll('.color-swatch');
+    const playBtn = document.getElementById('playBtn');
+    const printBtn = document.getElementById('printBtn');
+    const surpriseBtn = document.getElementById('surpriseBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const cardPreview = document.getElementById('cardPreview');
+    const cake = document.getElementById('cake');
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    const candle = document.getElementById('candle');
+
+    function updatePreview(){
+      previewTitle.style.fontFamily = fontSelect.value;
+      previewMsg.style.fontFamily = fontSelect.value;
+    }
+    fontSelect.addEventListener('change', updatePreview);
+
+    colorSwatches.forEach(s => s.addEventListener('click', ()=>{
+      const c = s.dataset.color;
+
+      cardPreview.style.background = `linear-gradient(180deg, ${c}33, ${c}11)`;
+      previewTitle.style.color = '#fff';
+      previewMsg.style.color = '#fff';
+
+      document.querySelectorAll("#fontSelect option").forEach(o=>{
+        o.style.background = c + "33";
+        o.style.color = "#ffffff";
+      });
+    }));
+
+    const ctx = confettiCanvas.getContext('2d');
+    let confettiPieces = [];
+    function resizeCanvas(){
+      confettiCanvas.width = cardPreview.clientWidth;
+      confettiCanvas.height = cardPreview.clientHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function makeConfetti(n=80){
+      confettiPieces = [];
+      const colors = ['#ff4d6d','#7c5cff','#ffd166','#34d399','#60a5fa','#ffb86b'];
+      for(let i=0;i<n;i++){
+        confettiPieces.push({
+          x: Math.random()*confettiCanvas.width,
+          y: Math.random()*-confettiCanvas.height,
+          w: 6 + Math.random()*8,
+          h: 6 + Math.random()*8,
+          vx: -2 + Math.random()*4,
+          vy: 2 + Math.random()*5,
+          rot: Math.random()*360,
+          color: colors[Math.floor(Math.random()*colors.length)],
+        });
+      }
+    }
+
+    let confettiAnim;
+    function animateConfetti(){
+      ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+      for(const p of confettiPieces){
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.05;
+        p.rot += 6;
+        ctx.save();
+        ctx.translate(p.x,p.y);
+        ctx.rotate(p.rot*Math.PI/180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+        ctx.restore();
+      }
+      confettiPieces = confettiPieces.filter(p => p.y < confettiCanvas.height + 50);
+      if(confettiPieces.length>0) confettiAnim = requestAnimationFrame(animateConfetti);
+      else cancelAnimationFrame(confettiAnim);
+    }
+
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx;
+    function playMelody(){
+      if(!audioCtx) audioCtx = new AudioCtx();
+      const now = audioCtx.currentTime;
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.type = 'sine'; g.gain.setValueAtTime(0, now);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(now);
+
+      const notes = [262,262,294,262,349,330, 262,262,294,262,392,349,
+                     262,262,523,440,349,330,294, 466,466,440,349,392,349];
+      const durations = [0.4,0.4,0.8,0.8,0.8,1.2, 0.4,0.4,0.8,0.8,0.8,1.2,
+                         0.4,0.4,0.8,0.8,0.4,0.4,1.2, 0.4,0.4,0.8,0.8,0.8,1.2];
+
+      let t = now + 0.05;
+      for(let i=0;i<notes.length;i++){
+        const f = notes[i];
+        o.frequency.setValueAtTime(f, t);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.linearRampToValueAtTime(0.12, t+0.02);
+        g.gain.setValueAtTime(0.12, t+durations[i]-0.05);
+        g.gain.linearRampToValueAtTime(0.0001, t+durations[i]);
+        t += durations[i];
+      }
+      o.stop(t+0.1);
+    }
+
+    playBtn.addEventListener('click', ()=>{
+      makeConfetti(140);
+      animateConfetti();
+      try{ playMelody(); }catch(e){}
+    });
+
+    surpriseBtn.addEventListener('click', ()=>{
+      cake.animate(
+        [{transform:'translateY(0)'},{transform:'translateY(-18px)'},{transform:'translateY(0)'}],
+        {duration:900,iterations:3}
+      );
+      cardPreview.animate(
+        [{filter:'brightness(1)'},{filter:'brightness(1.15)'}],
+        {duration:400,iterations:2,direction:'alternate'}
+      );
+      makeConfetti(200);
+      animateConfetti();
+    });
+
+    // Lilin ON/OFF – api nempel di atas lilin
+    let flame;
+    cake.addEventListener('click', ()=>{
+      if(flame){
+        flame.remove();
+        flame = null;
+        return;
+      }
+      flame = document.createElement('div');
+      flame.className = 'flame';
+      candle.appendChild(flame);
+    });
+
+    printBtn.addEventListener('click', ()=> window.print());
+
+    resetBtn.addEventListener('click', ()=>{
+      previewTitle.textContent = 'Teruntuk Scorvinov';
+      previewMsg.textContent = 'Happy Birthday and God Bless You!!!';
+      fontSelect.value='Inter, system-ui';
+      updatePreview();
+
+      previewTitle.style.color = '#10203a';
+      previewMsg.style.color = 'rgba(16,32,58,0.75)';
+      cardPreview.style.background='linear-gradient(180deg,#fff,#ffefef)';
+
+      document.querySelectorAll("#fontSelect option").forEach(o=>{
+        o.style.background = "#ffefef";
+        o.style.color = "#10203a";
+      });
+
+      if(flame){
+        flame.remove();
+        flame = null;
+      }
+    });
+
+    updatePreview();
+  </script>
+</body>
+</html>
